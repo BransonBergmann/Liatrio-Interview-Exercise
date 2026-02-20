@@ -15,9 +15,9 @@
 
 ## Research Goals
 
-- [ ] Golang  
-  - [ ] Fiber  
-- [ ] GitHub Actions  
+- `s` Golang  
+  - `s` Fiber  
+- `s` GitHub Actions  
 - [ ] Docker  
 - [ ] Cloud Platform  
 - [ ] GitHub Workflow  
