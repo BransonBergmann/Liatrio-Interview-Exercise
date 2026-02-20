@@ -1,6 +1,6 @@
 # Liatrio-Interview-Exercise
 
-Start of the project 2-20-26 {
+Start of the project 2-20-26 
     Legend:
         n = not at all/very little
         s = somewhat/started research
@@ -25,17 +25,17 @@ Start of the project 2-20-26 {
         Minified JSON File that returns:
             -Dynamic timestamp that returns within a few seconds of request
             -Text string of: "My name is..."
-}
 
-Golang & Fiber {
+
+Golang & Fiber 
     https://medium.com/@andra.gws/building-a-scalable-api-with-go-and-fiber-a-step-by-step-guide-c0fed11db1d2
         -Go has very high performance & great at concurrency
         -Fiber is built on top of Fasthttp
     https://zetcode.com/golang/fiber/
         -talks about JSON specifically
-}
 
-Github Actions {
+
+Github Actions 
     https://docs.github.com/en/actions/get-started/understand-github-actions
         -CI/CD platform to build & test every pull request to the repo or deploy merged pull requests to prod
         -Workflows
@@ -54,4 +54,3 @@ Github Actions {
             -Server that runs workflows when triggered.
             -One job at a time.
             test
-}
