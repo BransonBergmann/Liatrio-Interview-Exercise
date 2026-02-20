@@ -7,7 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type output struct {
+type Output struct {
 	message		string
 	timestamp 	int64
 }
@@ -15,9 +15,9 @@ type output struct {
 func main() {
 	app := fiber.New()
 
-	out := output {
-		message: "My name is Branson Bergmann",
-		timestamp: time.Now().Unix(),
+	out := Output {
+		"My name is Branson Bergmann",
+		time.Now().Unix(),
 	}
 
 	app.Get("/", func(c *fiber.Ctx) error {
