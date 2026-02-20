@@ -18,7 +18,7 @@
 - `s` Golang  
   - `s` Fiber  
 - `s` GitHub Actions  
-- `n` Docker 
+- `s` Docker 
 - `n` Cloud Platform  
 - `n` GitHub Workflow  
 
