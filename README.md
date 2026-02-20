@@ -18,7 +18,7 @@
 - `s` Golang  
   - `s` Fiber  
 - `s` GitHub Actions  
-- `n` Docker  
+- `n` Docker 
 - `n` Cloud Platform  
 - `n` GitHub Workflow  
 
@@ -83,3 +83,12 @@ https://docs.github.com/en/actions/get-started/understand-github-actions
 - **Runners**  
   - Server that runs workflows  
   - One job at a time  
+
+---
+
+## Docker
+
+Useful Commands:
+docker stop $(docker ps -q)
+ - Stops all running docker images
+
