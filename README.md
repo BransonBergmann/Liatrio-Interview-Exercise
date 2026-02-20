@@ -53,4 +53,5 @@ Github Actions {
         -Runners
             -Server that runs workflows when triggered.
             -One job at a time.
+            test
 }
