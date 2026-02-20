@@ -15,13 +15,13 @@ type output struct {
 func main() {
 	app := fiber.New()
 
-	output := output {
+	out := output {
 		message: "My name is Branson Bergmann",
 		timestamp: time.Now().Unix(),
 	}
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.JSON(output)
+		return c.JSON(out)
 	})
 
 	log.Fatal(app.Listen(":8080"))
