@@ -28,8 +28,10 @@
 
 - [x] GitHub repo created  
 - [x] Go & Fiber installed  
-- [ ] Simple application started  
-
+- [x] Simple application started  
+- [ ] Dockerfile written
+- [ ] Cloud Service selected
+- [ ] Github Actions setup
 ---
 
 ## Deliverables
