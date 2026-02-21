@@ -52,6 +52,14 @@ Minified JSON file that returns:
 - https://zetcode.com/golang/fiber/  
   - Covers JSON usage  
 
+Useful Commands:
+  - lsof -i :<port#>
+    - checks to see if the given port number is being used, and if it is, it gives the Pid of the process
+  - kill -9 <Pid>
+    - stops the process with the given Pid, useful for opening up local tests
+  - go run .
+    - runs the local .go file
+
 ---
 
 ## GitHub Actions
