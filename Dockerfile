@@ -2,15 +2,16 @@
 
 FROM golang:1.25.7
 
-WORKDIR /app
+WORKDIR /build
 
 COPY go.mod go.sum ./
+
 RUN go mod download
 
-COPY *.go ./
+COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /docker-gs-ping
+RUN go build send_message
 
 EXPOSE 8080
 
-CMD [ "/docker-gs-ping" ]
+CMD [ "/build/send_message" ]
