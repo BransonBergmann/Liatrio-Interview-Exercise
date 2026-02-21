@@ -29,7 +29,7 @@
 - [x] GitHub repo created  
 - [x] Go & Fiber installed  
 - [x] Simple application started  
-- [ ] Dockerfile written
+- [x] Dockerfile written
 - [ ] Cloud Service selected
 - [ ] Github Actions setup
 ---
