@@ -8,16 +8,16 @@ import (
 )
 
 type Output struct {
-	message		string `json:"message"`
-	timestamp 	int64  `json:"timestamp"`
+	Message		string `json:"message"`
+	Timestamp 	int64  `json:"timestamp"`
 }
 
 func main() {
 	app := fiber.New()
 
 	out := Output {
-		"My name is Branson Bergmann",
-		time.Now().Unix(),
+		Message: "My name is Branson Bergmann",
+		Timestamp: time.Now().Unix(),
 	}
 
 	app.Get("/", func(c *fiber.Ctx) error {
