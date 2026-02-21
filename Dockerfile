@@ -10,8 +10,8 @@ RUN go mod download
 
 COPY . .
 
-RUN go build send_message
+RUN go build -o send_message .
 
 EXPOSE 8080
 
-CMD [ "/build/send_message" ]
+CMD [ "./send_message" ]

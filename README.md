@@ -108,3 +108,6 @@ Useful Commands:
     - shows you all avaliable images
   - docker run <name>
     - runs the docker image w/ the name provided
+  - docker run --rm -p 8080:8080 echo
+    - use this run as it actually sets up the server at port 8080
+  
