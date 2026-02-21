@@ -102,6 +102,7 @@ Useful Commands:
   - docker stop $(docker ps -q)
     - Stops all running docker images
   - docker build --tag <name> .
+    - NOTE: Don't forget the dot at the end.
     - builds an image w/ the name you wish
   - docker image ls
     - shows you all avaliable images
