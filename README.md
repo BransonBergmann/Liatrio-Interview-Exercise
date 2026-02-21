@@ -99,6 +99,11 @@ https://docs.github.com/en/actions/get-started/understand-github-actions
 ## Docker
 
 Useful Commands:
-docker stop $(docker ps -q)
- - Stops all running docker images
-
+  - docker stop $(docker ps -q)
+    - Stops all running docker images
+  - docker build --tag <name> .
+    - builds an image w/ the name you wish
+  - docker image ls
+    - shows you all avaliable images
+  - docker run <name>
+    - runs the docker image w/ the name provided
