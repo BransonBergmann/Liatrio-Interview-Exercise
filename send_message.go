@@ -8,8 +8,8 @@ import (
 )
 
 type Output struct {
-	message		string
-	timestamp 	int64
+	message		string `json:"message"`
+	timestamp 	int64  `json:"timestamp"`
 }
 
 func main() {
