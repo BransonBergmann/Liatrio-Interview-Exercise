@@ -12,6 +12,6 @@ COPY . .
 
 RUN go build -o send_message .
 
-EXPOSE 8080
+EXPOSE 80
 
 CMD [ "./send_message" ]

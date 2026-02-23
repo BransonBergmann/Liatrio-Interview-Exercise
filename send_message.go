@@ -23,5 +23,5 @@ func main() {
 		return c.JSON(out)
 	})
 
-	log.Fatal(app.Listen(":8080"))
+	log.Fatal(app.Listen(":80"))
 }
