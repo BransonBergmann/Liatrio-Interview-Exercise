@@ -16,3 +16,11 @@ jobs:
     - uses: actions/checkout@v4
     - name: builds docker image
       run: docker build . --tag send_message:$(date +%s) 
+  
+  test:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: run tests
+      uses: liatrio/github-actions/apprentice-action@master
