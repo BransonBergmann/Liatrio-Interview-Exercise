@@ -15,4 +15,4 @@ jobs:
     steps: 
     - uses: actions/checkout@v4
     - name: builds docker image
-      run: docker build --tag send_message:$(date +%s) 
+      run: docker build . --tag sendMessage:$(date +%s) 
