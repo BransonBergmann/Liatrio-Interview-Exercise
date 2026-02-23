@@ -1,0 +1,15 @@
+name: function_check
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+test:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: run tests
+      uses: liatrio/github-actions/apprentice-action@master
