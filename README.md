@@ -20,7 +20,7 @@
 - `s` GitHub Actions  
 - `s` Docker 
 - `n` Cloud Platform  
-- `n` GitHub Workflow  
+- `s` GitHub Workflow  
 
 ---
 
@@ -31,7 +31,7 @@
 - [x] Simple application started  
 - [x] Dockerfile written
 - [ ] Cloud Service selected
-- [ ] Github Actions setup
+- [x] Github Actions setup
 ---
 
 ## Deliverables

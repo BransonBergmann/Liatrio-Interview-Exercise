@@ -22,6 +22,9 @@ jobs:
       run: go build -o app .
     - name: Permits binding to port 80
       run: sudo setcap 'cap_net_bind_service=+ep' ./app
+      #So yes, I couldve changed the run to sudo ./app, but after a little research,
+      #I found that (for obvious reasons), having the entire process run as root is
+      # bad practice, and this line allows the app to bind to port 80 and can do nothing else
     - name: Start app
       run: |
         ./app > app.log 2>&1 &
