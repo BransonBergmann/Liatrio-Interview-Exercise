@@ -23,5 +23,6 @@ func main() {
 		return c.JSON(out)
 	})
 
-	log.Fatal(app.Listen(":80"))
+	addr := "0.0.0.0:80"
+	log.Fatal(app.Listen(addr))
 }
