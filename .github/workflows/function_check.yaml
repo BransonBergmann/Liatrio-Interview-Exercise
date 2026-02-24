@@ -38,4 +38,4 @@ jobs:
         cat app.log
         exit 1
     - name: run tests
-      uses: liatrio/github-actions/apprentice-action@master
+      uses: liatrio/github-actions/apprentice-action@0b41561cca6822cc8d880fe0e49e7807a41fdf91
