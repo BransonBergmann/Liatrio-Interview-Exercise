@@ -28,6 +28,13 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      - name: Debug Azure context + ACR lookup
+        run: |
+          echo "== account =="
+          az account show --query "{name:name, id:id, tenantId:tenantId}" -o json
+          echo "== try acr show =="
+          az acr show -n bransonbergmannliatrio --query "{name:name, id:id, loginServer:loginServer}" -o json
+
       - name: Login to ACR
         run: az acr login --name bransonbergmannliatrio
 
