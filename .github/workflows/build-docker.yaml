@@ -20,6 +20,12 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
       
+
+    - name: debug
+      run: |
+        set -euo pipefail
+        echo "== account =="
+        az account show --query "{subscriptionId:id, subscriptionName:name, tenantId:tenantId, user:user.name}" -o table
     - name: set the subscription
       run: az account set --subscription c230b498-50fc-49f6-83fc-5c85e96edf50
       
