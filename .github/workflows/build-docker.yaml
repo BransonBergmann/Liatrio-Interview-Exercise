@@ -27,6 +27,11 @@ jobs:
     - name: Debug identity & subscription (optional)
       run: az account show --query "{subscriptionId:id, name:name, user:user.name}" -o table
 
+    - name: Network check to ACR endpoint
+      run: |
+        set -euo pipefail
+        nslookup bransonbergmannliatrio.azurecr.io
+        curl -sS -I https://bransonbergmannliatrio.azurecr.io/v2/ || true
     - name: Login to ACR (token-based)
       run: |
         set -euo pipefail
