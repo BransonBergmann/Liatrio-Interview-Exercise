@@ -16,26 +16,32 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Azure Login
-      uses: azure/login@v2
+      uses: azure/login@v2.3.0
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-    
-    - name: Login to ACR
-      run: az acr login --name bransonbergmannliatrio
-    
-    - name: builds & pushes docker image to ACR
+
+    - name: Verify Azure context
       run: |
-          ACR_LOGIN_SERVER=$(az acr show -n bransonbergmannliatrio --query loginServer -o tsv)
-          TAG=$(date +%s)
+        set -euo pipefail
+        az account show --output table
+        az acr show -n bransonbergmannliatrio --query "{name:name, loginServer:loginServer, resourceGroup:resourceGroup}" -o table    
+    #
+    # - name: Login to ACR
+    #   run: az acr login --name bransonbergmannliatrio
+    
+    # - name: builds & pushes docker image to ACR
+    #   run: |
+    #       ACR_LOGIN_SERVER=$(az acr show -n bransonbergmannliatrio --query loginServer -o tsv)
+    #       TAG=$(date +%s)
 
-          IMAGE="$ACR_LOGIN_SERVER/get_message:$TAG"
-          echo "Building $IMAGE"
-          docker build . -t "$IMAGE"
+    #       IMAGE="$ACR_LOGIN_SERVER/get_message:$TAG"
+    #       echo "Building $IMAGE"
+    #       docker build . -t "$IMAGE"
 
-          echo "Pushing $IMAGE"
-          docker push "$IMAGE"
+    #       echo "Pushing $IMAGE"
+    #       docker push "$IMAGE"
 
-          echo "Pushed: $IMAGE"
+    #       echo "Pushed: $IMAGE"
     
   
   
