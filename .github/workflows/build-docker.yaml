@@ -7,57 +7,24 @@ on:
     branches: [ "main" ]
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
 
-  build: 
+    steps:
+      - uses: actions/checkout@v4
 
-    runs-on: ubuntu-latest 
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    steps: 
-    - uses: actions/checkout@v4
+      - name: Set subscription
+        run: az account set --subscription "c230b498-50fc-49f6-83fc-5c85e96edf50"
 
-    - name: Azure Login
-      uses: azure/login@v2.3.0
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-      
-
-    - name: Set subscription
-      run: az account set --subscription "c230b498-50fc-49f6-83fc-5c85e96edf50"
-
-    - name: Debug identity & subscription (optional)
-      run: az account show --query "{subscriptionId:id, name:name, user:user.name}" -o table
-
-    - name: Network check to ACR endpoint
-      run: |
-        set -euo pipefail
-        nslookup bransonbergmannliatrio-dvexfnhpahcmhdeu.azurecr.io
-        curl -sS -I https://bransonbergmannliatrio.azurecr.io/v2/ || true
-    - name: Login to ACR (token-based)
-      run: |
-        set -euo pipefail
-        ACR_NAME="bransonbergmannliatrio"
-        ACR_LOGIN_SERVER="bransonbergmannliatrio-dvexfnhpahcmhdeu.azurecr.io"
-        TOKEN=$(az acr login -n "$ACR_NAME" --expose-token --query accessToken -o tsv)
-        echo "$TOKEN" | docker login "$ACR_LOGIN_SERVER" -u 00000000-0000-0000-0000-000000000000 --password-stdin
-
-    
-    
-    
-   
-    
-    - name: builds & pushes docker image to ACR
-      run: |
-          ACR_LOGIN_SERVER=$(az acr show -n bransonbergmannliatrio --query loginServer -o tsv)
-          TAG=$(date +%s)
-
-          IMAGE="$ACR_LOGIN_SERVER/get_message:$TAG"
-          echo "Building $IMAGE"
-          docker build . -t "$IMAGE"
-
-          echo "Pushing $IMAGE"
-          docker push "$IMAGE"
-
-          echo "Pushed: $IMAGE"
-    
-  
-  
+      - name: Build & push in ACR
+        run: |
+          az acr build \
+            -r bransonbergmannliatrio \
+            -t get_message:${{ github.run_number }} \
+            -t get_message:latest \
+            .
