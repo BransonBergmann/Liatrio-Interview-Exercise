@@ -22,6 +22,15 @@ jobs:
       
     - name: set the subscription
       run: az account set --subscription c230b498-50fc-49f6-83fc-5c85e96edf50
+      
+
+    - name: Login to ACR (token-based)
+      run: |
+       set -euo pipefail
+       ACR_NAME="bransonbergmannliatrio"
+       ACR_LOGIN_SERVER=$(az acr show -n "$ACR_NAME" --query loginServer -o tsv)
+       TOKEN=$(az acr login -n "$ACR_NAME" --expose-token --query accessToken -o tsv)
+       echo "$TOKEN" | docker login "$ACR_LOGIN_SERVER" -u 00000000-0000-0000-0000-000000000000 --password-stdin
 
     - name: Verify Azure context
       run: |
