@@ -21,46 +21,38 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
       
 
-    - name: debug
-      run: |
-        set -euo pipefail
-        echo "== account =="
-        az account show --query "{subscriptionId:id, subscriptionName:name, tenantId:tenantId, user:user.name}" -o table
-    - name: set the subscription
-      run: az account set --subscription c230b498-50fc-49f6-83fc-5c85e96edf50
-      
+    - name: Set subscription
+      run: az account set --subscription "c230b498-50fc-49f6-83fc-5c85e96edf50"
+
+    - name: Debug identity & subscription (optional)
+      run: az account show --query "{subscriptionId:id, name:name, user:user.name}" -o table
 
     - name: Login to ACR (token-based)
       run: |
-       set -euo pipefail
-       ACR_NAME="bransonbergmannliatrio"
-       ACR_LOGIN_SERVER=$(az acr show -n "$ACR_NAME" --query loginServer -o tsv)
-       TOKEN=$(az acr login -n "$ACR_NAME" --expose-token --query accessToken -o tsv)
-       echo "$TOKEN" | docker login "$ACR_LOGIN_SERVER" -u 00000000-0000-0000-0000-000000000000 --password-stdin
-
-    - name: Verify Azure context
-      run: |
         set -euo pipefail
-        az account show --output table
-        az acr show -n bransonbergmannliatrio --query "{name:name, loginServer:loginServer, resourceGroup:resourceGroup}" -o table    
+        ACR_NAME="bransonbergmannliatrio"
+        ACR_LOGIN_SERVER="$ACR_NAME.azurecr.io"
+        TOKEN=$(az acr login -n "$ACR_NAME" --expose-token --query accessToken -o tsv)
+        echo "$TOKEN" | docker login "$ACR_LOGIN_SERVER" -u 00000000-0000-0000-0000-000000000000 --password-stdin
+
     
     
-    # - name: Login to ACR
-    #   run: az acr login --name bransonbergmannliatrio
     
-    # - name: builds & pushes docker image to ACR
-    #   run: |
-    #       ACR_LOGIN_SERVER=$(az acr show -n bransonbergmannliatrio --query loginServer -o tsv)
-    #       TAG=$(date +%s)
+   
+    
+    - name: builds & pushes docker image to ACR
+      run: |
+          ACR_LOGIN_SERVER=$(az acr show -n bransonbergmannliatrio --query loginServer -o tsv)
+          TAG=$(date +%s)
 
-    #       IMAGE="$ACR_LOGIN_SERVER/get_message:$TAG"
-    #       echo "Building $IMAGE"
-    #       docker build . -t "$IMAGE"
+          IMAGE="$ACR_LOGIN_SERVER/get_message:$TAG"
+          echo "Building $IMAGE"
+          docker build . -t "$IMAGE"
 
-    #       echo "Pushing $IMAGE"
-    #       docker push "$IMAGE"
+          echo "Pushing $IMAGE"
+          docker push "$IMAGE"
 
-    #       echo "Pushed: $IMAGE"
+          echo "Pushed: $IMAGE"
     
   
   
