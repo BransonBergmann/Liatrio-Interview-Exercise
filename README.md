@@ -30,7 +30,7 @@
 - [x] Go & Fiber installed  
 - [x] Simple application started  
 - [x] Dockerfile written
-- [ ] Cloud Service selected
+- [x] Cloud Service selected
 - [x] Github Actions setup
 ---
 
@@ -110,4 +110,13 @@ Useful Commands:
     - runs the docker image w/ the name provided
   - docker run --rm -p 8080:8080 echo
     - use this run as it actually sets up the server at port 8080
+
+
+---
+
+## Azure
+
+Useful Commands:
+  - curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+    - actually installs the commands necessary to locally use azure commands.
   

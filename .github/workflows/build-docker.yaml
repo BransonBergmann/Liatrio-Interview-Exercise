@@ -14,7 +14,28 @@ jobs:
 
     steps: 
     - uses: actions/checkout@v4
-    - name: builds docker image
-      run: docker build . --tag send_message:$(date +%s) 
+
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Login to ACR
+      run: az acr login --name ${{ secrets.ACR_NAME }}
+    
+    - name: builds & pushes docker image to ACR
+      run: |
+          ACR_LOGIN_SERVER=$(az acr show -n bransonbergmannliatrio --query loginServer -o tsv)
+          TAG=$(date +%s)
+
+          IMAGE="$ACR_LOGIN_SERVER/get_message:$TAG"
+          echo "Building $IMAGE"
+          docker build . -t "$IMAGE"
+
+          echo "Pushing $IMAGE"
+          docker push "$IMAGE"
+
+          echo "Pushed: $IMAGE"
+    
   
   
