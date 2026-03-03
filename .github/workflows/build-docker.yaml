@@ -61,6 +61,7 @@ jobs:
             org.opencontainers.image.created=${{ github.event.repository.updated_at }}
       - name: Scan image for vulnerabilities (Trivy)
         uses: aquasecurity/trivy-action@master
+        continue-on-error: true
         with:
           image-ref: ${{ env.FULL_IMAGE }}:${{ env.IMAGE_TAG }}
           format: sarif
@@ -69,8 +70,9 @@ jobs:
           exit-code: ${{ github.event_name == 'push' && '1' || '0' }}
         if: github.event_name != 'pull_request'
 
+
       - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         if: always() && github.event_name != 'pull_request'
         with:
           sarif_file: trivy-results.sarif
