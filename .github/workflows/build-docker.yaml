@@ -61,19 +61,28 @@ jobs:
             org.opencontainers.image.created=${{ github.event.repository.updated_at }}
       - name: Scan image for vulnerabilities (Trivy)
         uses: aquasecurity/trivy-action@master
+        if: github.event_name != 'pull_request'
         continue-on-error: true
         with:
           image-ref: ${{ env.FULL_IMAGE }}:${{ env.IMAGE_TAG }}
           format: sarif
           output: trivy-results.sarif
           severity: CRITICAL,HIGH
-          exit-code: ${{ github.event_name == 'push' && '1' || '0' }}
-        if: github.event_name != 'pull_request'
+          exit-code: 0          # ← temporarily set to 0 so it doesn't abort before writing the file
 
+      - name: Debug - check if sarif file exists
+        if: always() && github.event_name != 'pull_request'
+        run: |
+          echo "== current directory =="
+          pwd
+          echo "== listing all files =="
+          ls -la
+          echo "== searching for sarif files anywhere =="
+          find / -name "*.sarif" 2>/dev/null
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v4
-        if: always() && github.event_name != 'pull_request'
+        if: always() && github.event_name != 'pull_request' && hashFiles('trivy-results.sarif') != ''
         with:
           sarif_file: trivy-results.sarif
       - name: Write build summary
