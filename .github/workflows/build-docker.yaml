@@ -68,21 +68,11 @@ jobs:
           format: sarif
           output: trivy-results.sarif
           severity: CRITICAL,HIGH
-          exit-code: 0          # ← temporarily set to 0 so it doesn't abort before writing the file
-
-      - name: Debug - check if sarif file exists
-        if: always() && github.event_name != 'pull_request'
-        run: |
-          echo "== current directory =="
-          pwd
-          echo "== listing all files =="
-          ls -la
-          echo "== searching for sarif files anywhere =="
-          find / -name "*.sarif" 2>/dev/null
+          exit-code: ${{ github.event_name == 'push' && '1' || '0' }}        
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v4
-        if: always() && github.event_name != 'pull_request' && hashFiles('trivy-results.sarif') != ''
+        if: always() && github.event_name != 'pull_request'
         with:
           sarif_file: trivy-results.sarif
       - name: Write build summary
