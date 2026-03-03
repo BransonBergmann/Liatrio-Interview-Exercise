@@ -26,8 +26,6 @@ WORKDIR /app
 COPY --from=builder /build/send_message .
 
 
-USER nonroot:nonroot
-
 EXPOSE 80
 
 CMD [ "./send_message" ]
