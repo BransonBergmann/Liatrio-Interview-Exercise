@@ -15,12 +15,11 @@
 
 ## Research Goals
 
-- `s` Golang  
-  - `s` Fiber  
-- `s` GitHub Actions  
-- `s` Docker 
-- `n` Cloud Platform  
-- `s` GitHub Workflow  
+- `c` Golang  
+  - `c` Fiber  
+- `c` GitHub Actions  
+- `c` Docker 
+- `c` Cloud Platform  
 
 ---
 
@@ -32,6 +31,9 @@
 - [x] Dockerfile written
 - [x] Cloud Service selected
 - [x] Github Actions setup
+- [x] ACR Storage Set up
+- [x] Azure Entra OIDC
+- [x] Deployed to Azure Container Apps
 ---
 
 ## Deliverables
@@ -40,6 +42,7 @@ Minified JSON file that returns:
 
 - Dynamic timestamp (within a few seconds of request)  
 - Text string: `"My name is..."`
+- Image tag, git commit, & container revision
 
 ---
 
@@ -117,6 +120,28 @@ Useful Commands:
 ## Azure
 
 Useful Commands:
-  - curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-    - actually installs the commands necessary to locally use azure commands.
-  
+  - `curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash`
+    - actually installs the Azure CLI tools needed to run az commands locally
+  - `az acr login --name <acr-name>`
+    - authenticates your local Docker client against ACR
+  - `az containerapp update --name <app> --resource-group <rg> --image <image>`
+    - updates a running Container App to use a new image
+
+---
+
+### OIDC Authentication
+
+- No passwords or secrets stored — uses temporary trust-based tokens
+- Requires an App Registration in Entra ID with a Federated Identity Credential pointed at the GitHub repo
+- Three values needed: `AZURE_CLIENT_ID` (permissions), `AZURE_TENANT_ID` (directory location), `AZURE_SUBSCRIPTION_ID` (which account)
+
+---
+
+### GitHub Actions Workflow
+
+- 
+  - **build-and-push job**: logs into Azure via OIDC, builds the Docker image, pushes to ACR, scans with Trivy, writes a summary
+  - **deploy job**: runs only after build-and-push succeeds, updates the Container App with the new image
+  - Images are tagged with both the run number (immutable) and `latest`
+  - Trivy scan is observe-only — reports CRITICAL/HIGH CVEs to the GitHub Security tab without blocking the pipeline
+  - Build summary viewable under the Actions tab → specific run → Summary page

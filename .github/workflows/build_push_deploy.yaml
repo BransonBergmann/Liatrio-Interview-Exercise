@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: read
+  # Generates token for Entra to verify
   id-token: write
   security-events: write 
 
@@ -16,7 +17,7 @@ env:
   IMAGE_NAME: get_message
   REGISTRY: bransonbergmannliatrio-dvexfnhpahcmhdeu.azurecr.io
   ACR_NAME: bransonbergmannliatrio
-  IMAGE_TAG: ${{ github.run_number }}
+  IMAGE_TAG: ${{ github.run_number }} 
   FULL_IMAGE: bransonbergmannliatrio-dvexfnhpahcmhdeu.azurecr.io/get_message
 
 jobs:
@@ -27,12 +28,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4 
 
-      - name: Azure login (OIDC)
+        
+      - name: Azure login (OIDC)                                # OIDC = Temp & Trust, no passwords stored
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}             #Roles & Permissions
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}             #Location of resources
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }} #Overall account
 
       - name: Login to ACR
         run: az acr login --name ${{ env.ACR_NAME }}
@@ -44,35 +46,36 @@ jobs:
         id: build
         uses: docker/build-push-action@v6
         with:
-          context: .
-          push: ${{ github.event_name != 'pull_request' }}
-          provenance: true
-          sbom: true
+          context: .                                            #Build everything
+          push: ${{ github.event_name != 'pull_request' }}      #Prevents unreviewed code
+          provenance: true                                      #Logs as to where & how it was built
+          sbom: true                                            #Full inventory of all packages in the image
           tags: |
              ${{ env.FULL_IMAGE }}:${{ env.IMAGE_TAG }}
-             ${{ env.FULL_IMAGE }}:latest
-          build-args: |
-            IMAGE_TAG=${{ env.FULL_IMAGE }}:${{ env.IMAGE_TAG }}
+             ${{ env.FULL_IMAGE }}:latest                       
+          build-args: |                                         #Variables runtime program can interact with
+            IMAGE_TAG=${{ env.FULL_IMAGE }}:${{ env.IMAGE_TAG }} 
             BUILD_DATE=${{ github.event.repository.updated_at }}
             GIT_COMMIT=${{ github.sha }}
-          labels: |
+          labels: |                                             #Variables that can be seen outside of the program, by viewing the Docker image
             org.opencontainers.image.source=${{ github.repositoryUrl }}
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.created=${{ github.event.repository.updated_at }}
+
       - name: Scan image for vulnerabilities (Trivy)
         uses: aquasecurity/trivy-action@master
         if: github.event_name != 'pull_request'
-        continue-on-error: true
+        continue-on-error: true                                 
         with:
           image-ref: ${{ env.FULL_IMAGE }}:${{ env.IMAGE_TAG }}
-          format: sarif
+          format: sarif                                         #How the data is outputted, standarized JSON-based format
           output: trivy-results.sarif
           severity: CRITICAL,HIGH
           exit-code: 0      
 
       - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v4
-        if: always() && github.event_name != 'pull_request'
+        uses: github/codeql-action/upload-sarif@v4              #Interfaces w/ Github to place the data in the Github Security tab
+        if: always() && github.event_name != 'pull_request'     #always() makes sure it continues to run even if there is an error
         with:
           sarif_file: trivy-results.sarif
       - name: Write build summary
@@ -100,8 +103,8 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Deploy new image to Container Apps
-        run: |
-          az containerapp update \
+        run: |                                                  #Update app: Name of the app -> Where the new image is -> What is the new image to slot in  
+          az containerapp update \                            
             --name get-message \
             --resource-group rg-get-message \
             --image ${{ env.FULL_IMAGE }}:${{ env.IMAGE_TAG }}
