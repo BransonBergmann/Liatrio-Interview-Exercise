@@ -104,7 +104,7 @@ jobs:
 
       - name: Deploy new image to Container Apps
         run: |                                                  #Update app: Name of the app -> Where the new image is -> What is the new image to slot in  
-          az containerapp update \                            
+          az containerapp update \
             --name get-message \
             --resource-group rg-get-message \
             --image ${{ env.FULL_IMAGE }}:${{ env.IMAGE_TAG }}
