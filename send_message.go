@@ -30,7 +30,7 @@ func main() {
 	
 	app.Get("/", func(c *fiber.Ctx) error {
 		out := Output{
-			Message:   "My name is Branson Bergmann",
+			Message:   "My name is Branson Bergmann, and I got the job",
 			Timestamp: time.Now().UnixMilli(),
 			ImageTag:  ImageTag,
 			GitCommit: GitCommit,
